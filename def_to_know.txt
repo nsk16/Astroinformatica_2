@@ -1,4 +1,5 @@
 Period (T): the number of time periods required to complete a single cycle.
 Frequency(nu): nu = 1/T is the no.of cycles thats completed in a second. For example heart beats 120 times in a minute, here frequency is 2 Hz (2 cycles in a second) and period is 0.5 sec (it takes 0.5 sec to complete one beat).
 Amplitude: maximum/minimum value during the cycle
+Periodogram: https://coolwiki.ipac.caltech.edu/index.php/What_is_a_periodogram%3F
    

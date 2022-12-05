@@ -6,11 +6,28 @@ from astropy.timeseries import LombScargle
 from scipy import signal
 
 class PeriodTechniques():
-    # prompt the user to choose the technique
-    # not sure what the package includes provide help
+
     def __init__(self, t, y):
         self.t = t
         self.y = y
+        self.t_unit = input("Enter the unit of time: ")
+        self.y_unit = input("Enter the unit of y: ")
+        plt.figure(dpi=200)
+        plt.scatter(t, y, color='black', marker='.')
+        plt.xlabel('Time ({})'.format(self.t_unit))
+        plt.ylabel('{}'.format(self.y_unit))
+        plt.savefig('data.pdf', dpi=200,facecolor='w')
+        plt.show()
+        plt.close()
+
+
+
+    def cp(self, fs=1.0):
+        self.fs = fs
+        self.f, self.Pxx_spec = signal.periodogram(self.y, self.fs,window='flattop', scaling='spectrum')
+        self.period = 1/self.f[np.argmax(self.Pxx_spec)]
+        amp = np.sqrt(self.Pxx_spec.max())
+        return self.period, amp
 
     def lombscargle_astropy(self, dy):
         self.dy = dy
@@ -24,11 +41,7 @@ class PeriodTechniques():
         self.period = 2*np.pi/self.w[np.argmax(self.periodogram)] # in units of sec
         return self.period, self.periodogram
 
-    def cp(self, fs):
-        self.fs = fs
-        self.f, self.Pxx_den = signal.periodogram(self.y, self.fs,window='flattop', scaling='spectrum')
-        self.period = 2*np.pi/self.w[np.argmax(self.periodogram)]
-        return self.period
+
 
     def gen_plot(x, y):
         plt.figure(dpi=200)
