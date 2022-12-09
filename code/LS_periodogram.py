@@ -11,6 +11,7 @@ from gatspy import datasets, periodic
 from astroML.time_series import lomb_scargle
 from astropy.utils.data import get_pkg_data_filename
 from astroML.datasets import fetch_LINEAR_sample
+from scipy import fftpack
 LINEAR_data = fetch_LINEAR_sample()
 #define path
 fig_path = '../test_fig/'
@@ -20,7 +21,7 @@ rng = np.random.default_rng()
 A = 2.0
 w0 = 1.0
 nin = 150
-nout = 1000000
+nout = 100000
 x = rng.uniform(0, 10 * np.pi, nin)
 y = A * np.sin(w0 * x)
 w = np.linspace(0.01, 10, nout)
@@ -55,6 +56,7 @@ model = LombScargleFast().fit(x,y, dy=0.1)
 periods, power = model.periodogram_auto(nyquist_factor=100)
 print("Results gatspy:")
 print("period: {} s ".format(periods[np.argmax(power)]))
+exit()
 #plot
 fig, axs = plt.subplots(4,1, figsize=(10, 10), facecolor='w')
 axs = axs.ravel()
@@ -69,6 +71,12 @@ axs[3].plot(periods, power, color='green')
 axs[1].set(xlabel='Frequency (1/s)', ylabel='Lomb-Scargle power')
 plt.show()
 
+#fft
+p = np.fft.fft(y)
+freq = np.fft.fftfreq(x.shape[-1])
+plt.plot(freq, abs(p))
+plt.show()
+exit()
 # test with real data
 data = pd.read_csv('33836115_sector01_4_2_cleaned.lc',sep="[ ,]",engine = "python",na_values=['*********','9.999999', '********', 'NaN'],names = ['time', 'mag','err'],usecols = [0,1,2])
 # print(data)

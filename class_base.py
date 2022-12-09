@@ -20,6 +20,8 @@ class PeriodTechniques():
         plt.show()
         plt.close()
 
+
+
     def cp(self, fs=1.0):
         self.fs = fs
         self.f, self.Pxx_spec = signal.periodogram(self.y, self.fs,window='flattop', scaling='spectrum')
@@ -39,13 +41,7 @@ class PeriodTechniques():
         self.period = 2*np.pi/self.w[np.argmax(self.periodogram)] # in units of sec
         return self.period, self.periodogram
 
-    def PDM(self, min, max, dval):
-        self.min = min
-        self.max = max
-        P = pyPDM.PyPDM(self.t, self.y)
-        scanner = pyPDM.Scanner(minVal=min, maxVal=max, dVal=dval, mode="period")
-        self.period, self.theta = P.pdmEquiBinCover(10, 3, scanner)
-        return self.period, self.theta # period = min of theta
+
 
     def gen_plot(x, y):
         plt.figure(dpi=200)
