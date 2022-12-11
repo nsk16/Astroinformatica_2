@@ -15,10 +15,6 @@ P = pyPDM.PyPDM(x, y)
 scanner = pyPDM.Scanner(minVal=2.0, maxVal=8.0, dVal=0.05, mode="period")
 f1, t1 = P.pdmEquiBinCover(10, 3, scanner)
 print(f1[np.argmin(t1)])
-exit()
-print("Periods: ", end=' ')
-for period in scanner:
-    print(period, end=' ')
 
 # Show the result
 plt.figure(facecolor='white')

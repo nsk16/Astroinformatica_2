@@ -1,16 +1,22 @@
 import numpy as np
 
-
-rng = np.random.default_rng()
-A = 2.0
+amp = 2.0
 w0 = 1.0
 nin = 150
 nout = 100000
-t = rng.uniform(0, 10 * np.pi, nin)
-y = A * np.sin(w0 * t)
-w = np.linspace(0.01, 10, nin)
-print(w.type)
-exit()
-tau = np.arctan(np.sin(2 * w * t)/np.cos(2 * w * t))/(2*w)
+t = np.linspace(0, 10 * np.pi, nin)
+y = amp * np.sin(w0 * t)
+w = np.linspace(0.01, 10, nout)
 
-P = 1/2 * ((((y) * np.cos(w(t-tau)))**2/(np.cos(w(t - tau)))**2) + (((y) * np.sin(w(t-tau)))**2/(np.sin(w(t - tau)))**2))
+P_x = []
+for i in w:
+    num = sum(np.sin(2 * i * t))
+    den = np.cos(2 * i * t)
+    tau = np.arctan(num/den)/ (2 * i)
+    A = sum((y * np.cos(i*(t-tau))))**2
+    B = sum((y * np.sin(i*(t-tau))))**2
+    C = sum(np.cos(i*(t - tau))**2)
+    D = sum(np.sin(i*(t - tau))**2)
+    P = (1/2 * (A/C + B/D)) / (np.std(y))**2
+    P_x.append(P)
+print(2*np.pi/w[np.argmax(P_x)])
